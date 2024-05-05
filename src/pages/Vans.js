@@ -8,7 +8,6 @@ export function loader() {
 
 export default function Vans() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [error, setError] = React.useState(null);
   const vans = useLoaderData();
 
   const typeFilter = searchParams.get("type");
@@ -26,7 +25,7 @@ export default function Vans() {
           type: typeFilter,
         }}
       >
-        <img src={van.imageUrl} />
+        <img src={van.imageUrl} alt="nore-more" />
         <div className="van-info">
           <h3>{van.name}</h3>
           <p>
@@ -48,10 +47,6 @@ export default function Vans() {
       }
       return prevParams;
     });
-  }
-
-  if (error) {
-    return <h1>There was an error: {error.message}</h1>;
   }
 
   return (
