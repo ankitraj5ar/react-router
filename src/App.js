@@ -23,6 +23,8 @@ import HostLayout from "./components/HostLayout";
 import NotFound from "./pages/NotFound";
 import Error from "./components/Error";
 import Login from "./pages/Login";
+import { requireAuth } from "./utils";
+import { redirect } from "react-router-dom";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -38,24 +40,24 @@ const router = createBrowserRouter(
       />
       <Route path="vans/:id" element={<VanDetail />} loader={vanDetailLoader} />
 
-      <Route
-        path="host"
-        element={<HostLayout />}
-        loader={async () => {
-          return null;
-        }}
-      >
+      <Route path="host" element={<HostLayout />}>
         <Route
           index
           element={<Dashboard />}
           loader={async () => {
-            return null;
+            const isLoggedIn = false;
+
+            // If the user is not authenticated, redirect to the login page
+            if (!isLoggedIn) {
+              return redirect("/login");
+            }
           }}
         />
         <Route
           path="income"
           element={<Income />}
           loader={async () => {
+            await requireAuth();
             return null;
           }}
         />
@@ -63,6 +65,7 @@ const router = createBrowserRouter(
           path="reviews"
           element={<Review />}
           loader={async () => {
+            await requireAuth();
             return null;
           }}
         />
@@ -76,6 +79,7 @@ const router = createBrowserRouter(
             index
             element={<HostVansInfo />}
             loader={async () => {
+              await requireAuth();
               return null;
             }}
           />
@@ -83,6 +87,7 @@ const router = createBrowserRouter(
             path="pricing"
             element={<HostVansPricing />}
             loader={async () => {
+              await requireAuth();
               return null;
             }}
           />
@@ -90,6 +95,7 @@ const router = createBrowserRouter(
             path="photos"
             element={<HostVansPhotos />}
             loader={async () => {
+              await requireAuth();
               return null;
             }}
           />
